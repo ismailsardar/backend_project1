@@ -1,6 +1,6 @@
 /**
- * Date: 1/5/2023
- * Subject: ToDo app with Rabble vi
+ * Date: 1/4/2023
+ * Subject: ToDo app app.js file
  * Auth: Ismile Sardar
 */
 

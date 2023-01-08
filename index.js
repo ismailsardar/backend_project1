@@ -1,3 +1,8 @@
+/**
+ * Date: 1/4/2023
+ * Subject: ToDo app index.js file
+ * Auth: Ismile Sardar
+*/
 const app = require("./app");
 
 const PORT = process.env.PORT || 5050;

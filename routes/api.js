@@ -21,6 +21,11 @@ route.post('/updateProfile', auth, controller.updateProfile);
 route.get('/getTodo', auth, todo.getTodo);
 route.post('/creatTodo', auth, todo.creatTodo);
 route.post('/updateTodo', auth, todo.updateTodo);
- 
+route.post('/deleteTodo', auth, todo.deleteTodo);
+
+//filter with status and Date
+route.get('/filterStatus', auth, todo.filterWithStatus);
+route.get('/filterDate', auth, todo.filterWithDate);
+
 //expots route
 module.exports = route;

@@ -18,6 +18,7 @@ const Encrypt = (pass) => {
 
 //create Profile
 controller.creatProfile = async (req, res) => {
+    //The value is come requeist Body
     let {userName,name,country,email,password} = req.body;
     //All field is required verify
     if(!userName || !name || !country || !email || !password){
@@ -61,6 +62,7 @@ controller.creatProfile = async (req, res) => {
 
 //login controller
 controller.loging = async (req, res) => {
+    //The value is come requeist Body
     let {userName,password} = req.body;
     //All field is required verify
     if(!userName || !password){
@@ -106,6 +108,7 @@ controller.loging = async (req, res) => {
 
 //get user
 controller.getProfile = async (req, res) => {
+    //id is come auth middleware
     const id = req.headers['id'];
     //user find
     Profile.findOne(
@@ -124,6 +127,7 @@ controller.getProfile = async (req, res) => {
 
 //update profile
 controller.updateProfile = async (req, res) => {
+    //id is come auth middleware
     const id = req.headers['id'];
     //reruire data body
     let {userName,name, country, email} = req.body;

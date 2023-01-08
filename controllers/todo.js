@@ -5,7 +5,6 @@
 */
 
 //import important lib
-// const jwt = require('jsonwebtoken');
 const Profile = require('../models/profile');
 const Todo = require('../models/todoModel');
 
@@ -113,6 +112,101 @@ todo.updateTodo = async (req,res) => {
             }
         });
     }
+}
+
+// delete ToDo list
+todo.deleteTodo = async (req,res) => {
+    //id is come auth middleware
+    const id = req.headers['id'];
+    const {todoId} = req.body;
+    //cake user are exgiset
+    let user = await Profile.findOne({_id:id});
+    //user validate
+    if(!user){
+        return res.status(404).json({message:"Token is expeair! Please loging.."});
+    }
+    //cake user Todo list are exgiset
+    let list = await Todo.findOne({userName:user.userName});
+    //list query validet
+    if(!list){
+        return res.status(404).json({message:"This user are not create Todo list! Please create Todo list first.."});
+    }
+    //cake body id is exiget
+    let idEx = await Todo.findOne({_id:todoId});
+    //_id query validet
+    if(!idEx){
+        return res.status(404).json({message:"This _id is not Valide! Please Enter Valide _id.."});
+    }
+    //delete list
+    if (list && idEx) {
+        Todo.deleteOne({_id:todoId},(err,status)=>{
+            if (!err) {
+                res.status(200).json({message:"Delete Success",Status:status});
+            } else {
+                res.status(404).json({message:"ToDo list are not Deleted!"});
+            }
+        });
+    }
+} 
+
+//filter With Status Todo list
+todo.filterWithStatus = async (req, res) => {
+    //id is come auth middleware
+    const id = req.headers['id'];
+    const {TodoStatus} = req.body;
+    //cake user are exgiset
+    let user = await Profile.findOne({_id:id});
+    //user validate
+    if(!user){
+        return res.status(404).json({message:"Token is expeair! Please loging.."});
+    }
+    //modefi ToDo status
+    let status = TodoStatus.toLowerCase();
+    //TodoStatus quire
+    if(user && status){
+        Todo.find(
+            {TodoStatus:status},
+            {_id:0,userName:1,TodoSubject:1,TodoDescription:1,TodoStatus:1,creatTodo:1,updateTodo:1},
+            (err, data)=>{
+                if (!err) {
+                    //respons user
+                    res.status(200).json({status:"success",Data:data});
+                } else {
+                    res.status(401).json({status:"faile",Error:err});
+                }
+            }
+        );
+    }
+}
+
+//Filter with Date
+todo.filterWithDate = async (req, res) => {
+     //id is come auth middleware
+     const id = req.headers['id'];
+     const {fromDate, toDate} = req.body;
+     //cake user are exgiset
+     let user = await Profile.findOne({_id:id});
+     //user validate
+     if(!user){
+         return res.status(404).json({message:"Token is expeair! Please loging.."});
+     }
+     //TodoStatus quire
+     if(user && fromDate && toDate){
+         Todo.find(
+            {creatTodo:{$gte:new Date(fromDate),$lte:new Date(toDate)}},
+             {_id:0,userName:1,TodoSubject:1,TodoDescription:1,TodoStatus:1,creatTodo:1,updateTodo:1},
+             (err, data)=>{
+                console.log(typeof data)
+                console.log(err)
+                 if (!err) {
+                     //respons user
+                     res.status(200).json({status:"success",Data:data});
+                 } else {
+                     res.status(401).json({status:"faile",Error:err});
+                 }
+             }
+         );
+     }
 }
 
 //module exports

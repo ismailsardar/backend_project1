@@ -15,11 +15,13 @@ const profileSchema = mongoose.Schema(
         name:{
             type:String,
             trim:true,
+            toLowerCase:true,
             required:[true, "Enter your name"]
         },
         country:{
             type:String,
             trim:true,
+            toLowerCase:true,
             required:[true, "Enter your country"]
         },
         email:{
